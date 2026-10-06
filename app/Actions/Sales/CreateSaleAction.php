@@ -11,7 +11,7 @@ use App\Models\Department;
 
 class CreateSaleAction
 {
-    public function execute($productId, $quantity, $price)
+ public function execute($productId, $quantity, $price, $totalAmount)
     {
         // Create sale
         $sale = new Sale();
@@ -24,8 +24,7 @@ class CreateSaleAction
         $item->product_id = $productId;
         $item->quantity = $quantity;
         $item->price = $price;
-        $item->total_amount = $quantity * $price;
-
+       $item->total_amount = $totalAmount;
         $item->save();
 
         // Reduce product stock
@@ -52,7 +51,7 @@ class CreateSaleAction
             'movement_type' => 'OUT',
             'quantity' => $quantity,
             'rate' => $price,
-            'amount' => $quantity * $price,
+            'amount' => $totalAmount,
             'unit' => 'pcs',
             'reference_type' => 'sale',
             'reference_id' => $sale->id,

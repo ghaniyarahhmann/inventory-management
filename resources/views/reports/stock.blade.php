@@ -13,7 +13,7 @@
                 </h1>
 
                 <p class="mt-2 text-sm text-slate-500">
-                    View current stock, stock received, and stock sold for all products.
+                  View current stock, stock received, and stock sold for all products.
                 </p>
             </div>
 
@@ -33,12 +33,32 @@
 
                     <thead class="bg-slate-900">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">#</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Product Name</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Stock In</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Stock Out</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Balance</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Status</th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">
+                                #
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">
+                                Product Name
+                            </th>
+
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">
+                                Stock In
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">
+                                Stock Out
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">
+                                Balance
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">
+                                Status
+                            </th>
+
                         </tr>
                     </thead>
 
@@ -48,44 +68,51 @@
 
                             <tr class="transition hover:bg-slate-50">
 
+                                {{-- Number --}}
                                 <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-900">
                                     {{ $loop->iteration }}
                                 </td>
 
+                                {{-- Product Name --}}
                                 <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-700">
                                     {{ $product->name }}
                                 </td>
 
+                                {{-- Stock In --}}
                                 <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-700">
                                     {{ $product->purchase_items_sum_quantity ?? 0 }}
                                 </td>
 
+                                {{-- Stock Out --}}
                                 <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-700">
                                     {{ $product->sale_items_sum_quantity ?? 0 }}
                                 </td>
 
-                                <td class="whitespace-nowrap px-6 py-4 text-sm font-bold text-slate-900">
-                                    {{ $product->stock }}
-                                </td>
+                                {{-- Balance --}}
 
-                                <td class="whitespace-nowrap px-6 py-4">
+                                <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-700">
+    {{ $product->stock }}
+</td>
 
-                                    @if ($product->stock <= 5)
 
-                                        <span class="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
-                                            Low Stock
-                                        </span>
+                               {{-- Status --}}
+<td class="whitespace-nowrap px-6 py-4">
 
-                                    @else
+    @if ($product->stock <= 5)
 
-                                        <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-                                            In Stock
-                                        </span>
+        <span class="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+            Low Stock
+        </span>
 
-                                    @endif
+    @else
 
-                                </td>
+        <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+            In Stock
+        </span>
 
+    @endif
+
+</td>
                             </tr>
 
                         @empty

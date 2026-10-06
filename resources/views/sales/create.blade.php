@@ -99,37 +99,57 @@
 
 
                 {{-- Unit Selling Price --}}
-                <div class="mb-8">
+<div class="mb-6">
 
-                    <label
-                        for="price"
-                        class="mb-2 block text-sm font-semibold text-slate-700"
-                    >
-                        Unit Selling Price
-                    </label>
+    <label
+        for="price"
+        class="mb-2 block text-sm font-semibold text-slate-700"
+    >
+        Unit Selling Price
+    </label>
 
-                    <input
-                        type="number"
-                        name="price"
-                        id="price"
-                        step="0.01"
-                        min="0"
-                        value="{{ old('price') }}"
-                        readonly
-                        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 outline-none"
-                    >
+    <input
+        type="number"
+        name="price"
+        id="price"
+        step="0.01"
+        min="0"
+        value="{{ old('price') }}"
+        readonly
+        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 outline-none"
+    >
 
-                    <p class="mt-2 text-xs text-slate-500">
-                        Selling price per unit. The total amount will be calculated from the quantity.
-                    </p>
+    <p class="mt-2 text-xs text-slate-500">
+        Unit selling price is calculated automatically from the total amount and quantity.
+    </p>
 
-                    <p class="mt-4 text-lg font-semibold text-slate-900">
-                        Total Amount:
-                        ₹<span id="totalAmount">0.00</span>
-                    </p>
+</div>
 
-                </div>
+{{-- Total Amount --}}
+<div class="mb-8">
 
+    <label
+        for="total_amount"
+        class="mb-2 block text-sm font-semibold text-slate-700"
+    >
+        Total Amount
+    </label>
+
+    <input
+        type="number"
+        name="total_amount"
+        id="total_amount"
+        step="0.01"
+        min="0"
+        value="{{ old('total_amount') }}"
+        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+    >
+
+    <p class="mt-2 text-xs text-slate-500">
+        Enter the total sale amount. The unit selling price will be calculated automatically.
+    </p>
+
+</div>
 
                 {{-- Buttons --}}
                 <div class="flex items-center gap-3">
@@ -158,35 +178,46 @@
 
 
     {{-- Price Calculation --}}
-    <script>
+   <script>
 
-        const productSelect = document.getElementById('product_id');
-        const quantityInput = document.getElementById('quantity');
-        const priceInput = document.getElementById('price');
-        const totalAmount = document.getElementById('totalAmount');
+    const productSelect = document.getElementById('product_id');
+    const quantityInput = document.getElementById('quantity');
+    const priceInput = document.getElementById('price');
+    const totalAmountInput = document.getElementById('total_amount');
 
-        function calculateTotalPrice() {
+    function loadProductPrice() {
 
-            const selectedProduct =
-                productSelect.options[productSelect.selectedIndex];
+        const selectedProduct =
+            productSelect.options[productSelect.selectedIndex];
 
-            const unitPrice =
-                parseFloat(selectedProduct.dataset.price) || 0;
+        const unitPrice =
+            parseFloat(selectedProduct.dataset.price) || 0;
 
-            const quantity =
-                parseInt(quantityInput.value) || 0;
+        priceInput.value = unitPrice.toFixed(2);
 
-            priceInput.value = unitPrice.toFixed(2);
+        calculateTotal();
+    }
 
-            totalAmount.textContent =
-                (unitPrice * quantity).toFixed(2);
-        }
+    function calculateTotal() {
 
-        productSelect.addEventListener('change', calculateTotalPrice);
-        quantityInput.addEventListener('input', calculateTotalPrice);
+        const quantity =
+            parseFloat(quantityInput.value) || 0;
 
-        calculateTotalPrice();
+        const price =
+            parseFloat(priceInput.value) || 0;
 
-    </script>
+        totalAmountInput.value =
+            (quantity * price).toFixed(2);
+    }
 
+    // Product changed
+    productSelect.addEventListener('change', loadProductPrice);
+
+    // Quantity changed
+    quantityInput.addEventListener('input', calculateTotal);
+
+    // Load default product price and total
+    loadProductPrice();
+
+</script>
 </x-app-layout>

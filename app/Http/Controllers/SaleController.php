@@ -48,10 +48,11 @@ class SaleController extends Controller
         ]);
 
         $this->saleService->create(
-            $request->product_id,
-            $request->quantity,
-            $request->price
-        );
+    $request->product_id,
+    $request->quantity,
+    $request->price,
+    $request->total_amount
+);
 
         return redirect()
             ->route('sales.index')
@@ -83,26 +84,27 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sale $sale)
-    {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-        ]);
+   public function update(Request $request, Sale $sale)
+{
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'quantity' => 'required|integer|min:1',
+        'price' => 'required|numeric|min:0',
+        'total_amount' => 'required|numeric|min:0',
+    ]);
 
-        $this->saleService->update(
-            $sale,
-            $request->product_id,
-            $request->quantity,
-            $request->price
-        );
+    $this->saleService->update(
+        $sale,
+        $request->product_id,
+        $request->quantity,
+        $request->price,
+        $request->total_amount
+    );
 
-        return redirect()
-            ->route('sales.index')
-            ->with('success', 'Sale updated successfully.');
-    }
-
+    return redirect()
+        ->route('sales.index')
+        ->with('success', 'Sale updated successfully.');
+}
     /**
      * Remove the specified resource from storage.
      */

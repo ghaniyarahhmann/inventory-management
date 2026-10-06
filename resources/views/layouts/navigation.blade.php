@@ -319,104 +319,117 @@
             </div>
 
 
-            {{-- Administration --}}
-            @if (auth()->user()->hasPermission('view_users'))
+           {{-- Administration --}}
+@if (
+    auth()->user()->hasPermission('view_users') ||
+    auth()->user()->hasPermission('view_roles') ||
+    auth()->user()->hasPermission('view_departments')
+)
 
-                <div class="mt-5 border-t border-slate-800 pt-5">
+    <div class="mt-5 border-t border-slate-800 pt-5">
 
-                    <p class="px-4 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                        Administration
-                    </p>
+        <p class="px-4 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Administration
+        </p>
 
+        {{-- Users --}}
+        @if (auth()->user()->hasPermission('view_users'))
 
-                    {{-- Users --}}
-                    <a
-                        href="{{ route('users.index') }}"
-                        class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('users.*')
-                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/30'
-                            : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
-                    >
+            <a
+                href="{{ route('users.index') }}"
+                class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition
+                {{ request()->routeIs('users.*')
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/30'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+            >
 
-                        <svg
-                            class="h-5 w-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2m6-10a4 4 0 100-8 4 4 0 000 8zm10 10v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
-                            />
-                        </svg>
+                <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2m6-10a4 4 0 100-8 4 4 0 000 8zm10 10v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
+                    />
+                </svg>
 
-                        Users
+                Users
 
-                    </a>
+            </a>
 
-
-                    {{-- Roles --}}
-                    <a
-                        href="{{ route('roles.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('roles.*')
-                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/30'
-                            : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
-                    >
-
-                        <svg
-                            class="h-5 w-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 12a4 4 0 100-8 4 4 0 000 8zm-7 9a7 7 0 0114 0"
-                            />
-                        </svg>
-
-                        Roles
-
-                    </a>
+        @endif
 
 
-                    {{-- Departments --}}
-                    <a
-                        href="{{ route('departments.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('departments.*')
-                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/30'
-                            : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
-                    >
+        {{-- Roles --}}
+        @if (auth()->user()->hasPermission('view_roles'))
 
-                        <svg
-                            class="h-5 w-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16M9 7h6M9 11h6M9 15h6"
-                            />
-                        </svg>
+            <a
+                href="{{ route('roles.index') }}"
+                class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition
+                {{ request()->routeIs('roles.*')
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/30'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+            >
 
-                        Departments
+                <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 12a4 4 0 100-8 4 4 0 000 8zm-7 9a7 7 0 0114 0"
+                    />
+                </svg>
 
-                    </a>
+                Roles
 
-                </div>
+            </a>
 
-            @endif
+        @endif
 
-        </div>
+
+        {{-- Departments --}}
+        @if (auth()->user()->hasPermission('view_departments'))
+
+            <a
+                href="{{ route('departments.index') }}"
+                class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition
+                {{ request()->routeIs('departments.*')
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/30'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+            >
+
+                <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16M9 7h6M9 11h6M9 15h6"
+                    />
+                </svg>
+
+                Departments
+
+            </a>
+
+        @endif
+
+    </div>
+
+@endif
 
 
         {{-- User section --}}

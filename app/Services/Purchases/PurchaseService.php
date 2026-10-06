@@ -18,15 +18,15 @@ class PurchaseService
         );
     }
 
-    public function update(Purchase $purchase, $productId, $quantity, $price)
-    {
-        return (new UpdatePurchaseAction())->execute(
-            $purchase,
-            $productId,
-            $quantity,
-            $price
-        );
-    }
+   public function update(Purchase $purchase, $productId, $quantity, $totalAmount)
+{
+    return (new UpdatePurchaseAction())->execute(
+        $purchase,
+        $productId,
+        $quantity,
+        $totalAmount
+    );
+}
 
     public function delete(Purchase $purchase)
     {

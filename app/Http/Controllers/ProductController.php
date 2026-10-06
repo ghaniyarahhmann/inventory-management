@@ -22,11 +22,12 @@ class ProductController extends Controller
      */
    public function index()
 {
-    $products = Product::all();
+    $products = Product::withSum('purchaseItems', 'quantity')
+        ->withSum('saleItems', 'quantity')
+        ->get();
 
     return view('products.index', compact('products'));
 }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -104,7 +105,7 @@ $totalOutAmount = $product->stockMovements()
      */
     public function update(Request $request, Product $product)
 {
-   $request->validate([
+  $request->validate([
     'name' => [
         'required',
         Rule::unique('products', 'name')->ignore($product->id),
@@ -113,9 +114,8 @@ $totalOutAmount = $product->stockMovements()
 ]);
 
     $product->name = $request->name;
-    $product->price = $request->price;
-   
-    $product->save();
+$product->price = $request->price;
+$product->save();
 
     return redirect()->route('products.index');
 }

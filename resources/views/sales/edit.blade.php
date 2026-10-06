@@ -121,7 +121,7 @@
                     >
 
                     <p class="mt-2 text-xs text-slate-500">
-                        Unit price is calculated automatically from the total amount and quantity.
+                        Unit selling price comes from the selected product and cannot be edited.
                     </p>
 
                 </div>
@@ -142,12 +142,12 @@
                         id="total_amount"
                         step="0.01"
                         min="0"
-                        value="{{ old('total_amount', ($item?->quantity ?? 0) * ($item?->price ?? 0)) }}"
+                       value="{{ old('total_amount', $item?->total_amount ?? (($item?->quantity ?? 0) * ($item?->price ?? 0))) }}"
                         class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                     >
 
                     <p class="mt-2 text-xs text-slate-500">
-                        Enter the total selling amount. The unit price will be calculated automatically.
+                        Total amount is calculated from quantity × unit price by default, but you can adjust it manually.
                     </p>
 
                 </div>
@@ -185,44 +185,63 @@
     const priceInput = document.getElementById('price');
     const totalAmountInput = document.getElementById('total_amount');
 
-    function updatePriceAndTotal() {
+    let totalManuallyEdited = false;
+
+    function getProductPrice() {
 
         const selectedProduct =
             productSelect.options[productSelect.selectedIndex];
 
-        const unitPrice =
-            parseFloat(selectedProduct.dataset.price) || 0;
+        return parseFloat(selectedProduct.dataset.price) || 0;
+    }
 
-        const quantity =
-            parseInt(quantityInput.value) || 0;
+    function updatePriceAndTotal() {
 
-        // Unit price always comes from the product
+        const unitPrice = getProductPrice();
+        const quantity = parseFloat(quantityInput.value) || 0;
+
         priceInput.value = unitPrice.toFixed(2);
 
-        // Calculate normal total
-        totalAmountInput.value =
-            (unitPrice * quantity).toFixed(2);
+        if (!totalManuallyEdited) {
+            totalAmountInput.value =
+                (unitPrice * quantity).toFixed(2);
+        }
     }
 
     // Product changed
-    productSelect.addEventListener('change', updatePriceAndTotal);
+    productSelect.addEventListener('change', function () {
+
+        totalManuallyEdited = false;
+
+        updatePriceAndTotal();
+    });
 
     // Quantity changed
     quantityInput.addEventListener('input', function () {
 
-        const unitPrice =
-            parseFloat(priceInput.value) || 0;
+        if (!totalManuallyEdited) {
 
-        const quantity =
-            parseInt(quantityInput.value) || 0;
+            const unitPrice =
+                parseFloat(priceInput.value) || 0;
 
-        totalAmountInput.value =
-            (unitPrice * quantity).toFixed(2);
+            const quantity =
+                parseFloat(quantityInput.value) || 0;
+
+            totalAmountInput.value =
+                (unitPrice * quantity).toFixed(2);
+        }
     });
 
-    // Initial calculation
-    updatePriceAndTotal();
+    // Total manually changed
+    totalAmountInput.addEventListener('input', function () {
+
+        totalManuallyEdited = true;
+    });
+
+    // Initial product price
+    const initialPrice = getProductPrice();
+
+    priceInput.value = initialPrice.toFixed(2);
 
 </script>
-
 </x-app-layout>

@@ -10,7 +10,7 @@ use App\Models\Department;
 
 class UpdateSaleAction
 {
-    public function execute(Sale $sale, $productId, $quantity, $price)
+    public function execute(Sale $sale, $productId, $quantity, $price, $totalAmount)
     {
         $item = $sale->items->first();
 
@@ -33,7 +33,7 @@ class UpdateSaleAction
         $item->product_id = $productId;
         $item->quantity = $quantity;
         $item->price = $price;
-        $item->total_amount = $quantity * $price;
+        $item->total_amount = $totalAmount;
         $item->save();
 
         // Reduce new product stock
@@ -65,7 +65,7 @@ class UpdateSaleAction
             $stockMovement->movement_type = 'OUT';
             $stockMovement->quantity = $quantity;
             $stockMovement->rate = $price;
-            $stockMovement->amount = $quantity * $price;
+            $stockMovement->amount = $totalAmount;
             $stockMovement->unit = 'pcs';
             $stockMovement->reference_type = 'sale';
             $stockMovement->reference_id = $sale->id;

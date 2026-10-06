@@ -115,27 +115,29 @@
                                 </td>
 
                                 <td class="whitespace-nowrap px-6 py-4">
+@php
+    $balance = $product->stock;
+@endphp
 
-                                    @if ($product->stock == 0)
+@if ($balance == 0)
 
-                                        <span class="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
-                                            Out of Stock
-                                        </span>
+    <span class="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+        Out of Stock
+    </span>
 
-                                    @elseif ($product->stock <= 5)
+@elseif ($balance <= 5)
 
-                                        <span class="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
-                                            Low Stock
-                                        </span>
+    <span class="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
+        Low Stock
+    </span>
 
-                                    @else
+@else
 
-                                        <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-                                            In Stock
-                                        </span>
+    <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+        In Stock
+    </span>
 
-                                    @endif
-
+@endif
                                 </td>
 
 

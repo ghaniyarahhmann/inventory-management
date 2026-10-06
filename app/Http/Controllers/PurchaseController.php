@@ -85,19 +85,18 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, Purchase $purchase)
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-        ]);
+      $request->validate([
+    'product_id' => 'required|exists:products,id',
+    'quantity' => 'required|integer|min:1',
+    'total_amount' => 'required|numeric|min:0',
+]);
 
-        $this->purchaseService->update(
-            $purchase,
-            $request->product_id,
-            $request->quantity,
-            $request->price
-        );
-
+      $this->purchaseService->update(
+    $purchase,
+    $request->product_id,
+    $request->quantity,
+    $request->total_amount
+);
         return redirect()
             ->route('purchases.index')
             ->with('success', 'Purchase updated successfully.');
