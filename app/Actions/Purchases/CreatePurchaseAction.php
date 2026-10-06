@@ -11,6 +11,9 @@ use App\Models\Department;
 
 class CreatePurchaseAction
 {
+
+
+
     public function execute($productId, $quantity, $price)
     {
         // Create purchase
